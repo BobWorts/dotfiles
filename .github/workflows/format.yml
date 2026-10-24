@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: cachix/install-nix-action@v31
       - name: Format with alejandra
         run: nix run nixpkgs#alejandra -- .
       - name: Commit if anything changed

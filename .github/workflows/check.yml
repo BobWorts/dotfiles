@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: cachix/install-nix-action@v31
       - name: Evaluate flake (no build)
         run: nix flake check --no-build --all-systems
 
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: cachix/install-nix-action@v31
       - name: Formatting (alejandra)
         run: nix run nixpkgs#alejandra -- --check .
       - name: Lint (statix)
@@ -43,10 +43,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: cachix/install-nix-action@v31
         with:
           # Download niri + noctalia as binaries instead of building them.
-          extra-conf: |
+          extra_nix_config: |
             extra-substituters = https://niri.cachix.org https://noctalia.cachix.org
             extra-trusted-public-keys = niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964= noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4=
       - name: Build the NixOS system closure
