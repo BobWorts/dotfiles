@@ -131,8 +131,7 @@ devShells.default = pkgs.mkShell { packages = [ pkgs.nodejs pkgs.cargo ]; };
 
 ## Verifying changes
 
-You can develop this on **macOS**, but a NixOS system can't be *built* there
-without a Linux builder — these all work locally as pure evaluation/lint:
+Everything evaluates/lints locally without a NixOS build:
 
 ```sh
 nix flake check                                              # evaluate everything
@@ -142,7 +141,7 @@ nix run nixpkgs#statix -- check . && nix run nixpkgs#deadnix # lint
 nix eval .#nixosConfigurations.nnn.config.system.build.toplevel.drvPath
 ```
 
-On a NixOS box (or with a remote/`linux-builder`) you can smoke-test in a VM:
+On a NixOS box you can smoke-test in a VM:
 
 ```sh
 nixos-rebuild build-vm --flake .#nnn

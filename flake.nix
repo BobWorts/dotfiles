@@ -56,12 +56,10 @@
     local = import ./local.nix;
     inherit (local) username;
 
-    # Helper so `nix fmt` / `nix develop` work from macOS or Linux.
+    # Linux systems for `nix fmt` / `nix develop`.
     devSystems = [
       "x86_64-linux"
       "aarch64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
     ];
     forAllSystems = nixpkgs.lib.genAttrs devSystems;
     pkgsFor = system: nixpkgs.legacyPackages.${system};

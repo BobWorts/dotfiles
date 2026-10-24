@@ -4,7 +4,6 @@
     ./networking.nix
     ./audio.nix
     ./hardware.nix
-    ./apple-studio-display.nix # optional: comment out if you have no Studio Display
     ./fonts.nix
     ./niri.nix
     ./noctalia.nix
