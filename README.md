@@ -1,7 +1,7 @@
 # nnn-starter
 
 <p align="center">
-  <img src="screenshot.png" alt="Screenshot of the NNN desktop — Niri + Noctalia on NixOS" width="100%">
+  <img src="media/screenshot.png" alt="Screenshot of the NNN desktop — Niri + Noctalia on NixOS" width="100%">
 </p>
 
 > Three letters, zero compromise — now with batteries included.
