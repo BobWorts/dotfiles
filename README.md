@@ -42,7 +42,7 @@ git clone https://github.com/<you>/nnn-starter ~/nnn-starter
 cd ~/nnn-starter
 
 # 2. Generate real hardware config for THIS machine.
-sudo nixos-generate-config --show-hardware-config > hosts/nnn/hardware-configuration.nix
+sudo nixos-generate-config --show-hardware-config > hosts/example/hardware-configuration.nix
 
 # 3. Copy the personal-settings template and fill in your identity.
 cp local.example.nix local.nix
@@ -50,12 +50,16 @@ $EDITOR local.nix
 
 # 4. Build & switch. `path:` is required: flakes only see git-tracked files,
 #    and local.nix is gitignored.
-sudo nixos-rebuild switch --flake path:.#nnn
+sudo nixos-rebuild switch --flake path:.#example
 ```
 
 After the first build, rebuild with `nh os switch` (aliased to `rebuild`) or
 `update` (which also bumps `flake.lock`). Home Manager configures `nh` with the
 `path:` prefix too, so the gitignored `local.nix` stays visible.
+
+`nh` picks the config by your machine's hostname, so the flake attr must match
+`hostName` from `local.nix` (both are `example` out of the box). If you change
+`hostName`, rename `hosts/example` and `nixosConfigurations.example` to match.
 
 ## Placeholders to edit
 
@@ -76,15 +80,15 @@ succeeds.
 | **Git identity** (name, email) | `local.nix` |
 | **Timezone** | `local.nix` |
 | **Keyboard layouts** | `local.nix` |
-| **Hardware** | `hosts/nnn/hardware-configuration.nix` (generated, step 2 above) |
-| **Locale** | [`hosts/nnn/default.nix`](hosts/nnn/default.nix) |
+| **Hardware** | `hosts/example/hardware-configuration.nix` (generated, step 2 above) |
+| **Locale** | [`hosts/example/default.nix`](hosts/example/default.nix) |
 
 ## Layout
 
 ```
-flake.nix              # inputs + the single `nixosConfigurations.nnn`
+flake.nix              # inputs + the single `nixosConfigurations.example`
 local.example.nix      # template for machine-local identity (copy to local.nix)
-hosts/nnn/             # host: hardware + locale
+hosts/example/         # host: hardware + locale
 modules/nixos/         # system: boot, audio, niri, noctalia, stylix, users…
 modules/home/          # user: zsh, ghostty, neovim, niri keybinds, cli tools…
 themes/kanagawa.yaml   # vendored base16 palette (Stylix source of truth)
@@ -143,14 +147,14 @@ nix flake check                                              # evaluate everythi
 nix flake show                                               # list outputs
 nix fmt                                                      # format (alejandra)
 nix run nixpkgs#statix -- check . && nix run nixpkgs#deadnix # lint
-nix eval .#nixosConfigurations.nnn.config.system.build.toplevel.drvPath
+nix eval .#nixosConfigurations.example.config.system.build.toplevel.drvPath
 ```
 
 On a NixOS box you can smoke-test in a VM:
 
 ```sh
-nixos-rebuild build-vm --flake .#nnn
-./result/bin/run-nnn-vm
+nixos-rebuild build-vm --flake .#example
+./result/bin/run-example-vm
 ```
 
 ### CI

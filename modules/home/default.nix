@@ -19,7 +19,7 @@
   home.username = username;
   home.homeDirectory = "/home/${username}";
 
-  # Must match the system stateVersion in hosts/nnn/default.nix.
+  # Must match the system stateVersion in hosts/example/default.nix.
   home.stateVersion = "25.05";
 
   programs.home-manager.enable = true;

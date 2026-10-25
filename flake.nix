@@ -54,7 +54,7 @@
     forAllSystems = nixpkgs.lib.genAttrs devSystems;
     pkgsFor = system: nixpkgs.legacyPackages.${system};
   in {
-    nixosConfigurations.nnn = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.example = nixpkgs.lib.nixosSystem {
       system = hostSystem;
       specialArgs = {inherit inputs username local;};
       modules = [
@@ -63,7 +63,7 @@
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
 
-        ./hosts/nnn
+        ./hosts/example
         ./modules/nixos
 
         {
