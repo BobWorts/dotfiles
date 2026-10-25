@@ -80,6 +80,7 @@ succeeds.
 | **Git identity** (name, email) | `local.nix` |
 | **Timezone** | `local.nix` |
 | **Keyboard layouts** | `local.nix` |
+| **QEMU VMs** | `local.nix` (`useQEMU = true`) |
 | **Hardware** | `hosts/example/hardware-configuration.nix` (generated, step 2 above) |
 | **Locale** | [`hosts/example/default.nix`](hosts/example/default.nix) |
 

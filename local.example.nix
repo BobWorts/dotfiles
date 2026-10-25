@@ -4,7 +4,7 @@
   # Login user and machine identity.
   username = "example";
   hostName = "example";
-  fullName = "Your Name"; # shown as the user account description
+  fullName = "Your Name"; # Shown as the user account description
 
   # Locale / location.
   timeZone = "UTC";
@@ -24,4 +24,6 @@
   #   compose: ralt, menu                  lv3: ralt_switch, enter_switch
   # Full list: man 7 xkeyboard-config or /usr/share/X11/xkb/rules/evdev.lst.
   keyboardOptions = "grp:alt_shift_toggle";
+
+  useQEMU = false; # QEMU/KVM VMs: libvirtd + virt-manager
 }

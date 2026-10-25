@@ -10,6 +10,7 @@
     ./desktop.nix
     ./stylix.nix
     ./users.nix
+    ./qemu.nix
   ];
 
   nix.settings.experimental-features = [
