@@ -10,7 +10,6 @@
     ./desktop.nix
     ./stylix.nix
     ./users.nix
-    ./docker.nix # optional: comment out if you don't want containers
   ];
 
   nix.settings.experimental-features = [
