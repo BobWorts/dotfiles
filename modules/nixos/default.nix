@@ -13,7 +13,6 @@
     ./docker.nix # optional: comment out if you don't want containers
   ];
 
-  # Flakes + the modern nix CLI.
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"

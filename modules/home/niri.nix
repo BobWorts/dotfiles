@@ -7,7 +7,7 @@
 
     input = {
       keyboard.xkb = {
-        layout = local.keyboardLayouts; # defined once in local.nix
+        layout = local.keyboardLayouts;
         options = local.keyboardOptions;
       };
       # Each window remembers its own layout ("global" = one shared layout).
@@ -57,8 +57,7 @@
     # Subtle, fast animations — omarchy-style polish without distraction.
     animations.slowdown = 0.7;
 
-    # niri-flake's canonical attribute form: `action.<name> = <args>`. No-arg
-    # actions take `{ }`; spawn takes a string or a list of argv strings.
+    # niri-flake form: `action.<name> = <args>`; spawn takes a string or argv list.
     binds = {
       # Launchers
       "Mod+Return".action.spawn = "ghostty";
@@ -70,8 +69,8 @@
         "panel-toggle"
         "launcher"
       ];
-      "Mod+B".action.spawn = "zen-beta"; # browser
-      "Mod+E".action.spawn = "nautilus"; # file manager
+      "Mod+B".action.spawn = "zen-beta";
+      "Mod+E".action.spawn = "nautilus";
 
       # Window management
       "Mod+Q".action.close-window = {};

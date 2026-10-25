@@ -14,7 +14,6 @@
       copy-on-select = "clipboard";
       confirm-close-surface = false;
       window-inherit-working-directory = true;
-      # Background opacity is managed by Stylix (stylix.opacity.terminal).
     };
   };
 }

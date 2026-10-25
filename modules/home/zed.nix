@@ -18,10 +18,10 @@
     # Auto-installed on startup. Names come from the Zed extension registry:
     # https://github.com/zed-industries/extensions
     extensions = [
-      "kanagawa-themes" # color theme, selected below
-      "catppuccin-icons" # file-type icon theme, selected below
-      "nix" # Nix language support
-      "html" # HTML language support
+      "kanagawa-themes"
+      "catppuccin-icons"
+      "nix"
+      "html"
     ];
 
     userSettings = {
@@ -35,7 +35,6 @@
       # Nix owns the package; don't let Zed try to update itself.
       auto_update = false;
 
-      # No phone-home.
       telemetry = {
         diagnostics = false;
         metrics = false;

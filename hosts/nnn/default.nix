@@ -12,7 +12,7 @@
   services.xserver.xkb = {
     layout = local.keyboardLayouts;
     variant = "";
-    options = local.keyboardOptions; # e.g. Alt+Shift switches US <-> Russian
+    options = local.keyboardOptions;
   };
   console.keyMap = "us";
 

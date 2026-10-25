@@ -69,9 +69,8 @@
     devenv # per-project dev environments (`use devenv` in .envrc)
   ];
 
-  # nh is a nicer frontend for nixos-rebuild + garbage collection. Point it at
-  # wherever you keep this flake checked out. The `path:` prefix makes flakes
-  # copy the whole directory, so the gitignored local.nix is actually seen.
+  # nh: friendlier nixos-rebuild + GC. `path:` keeps the gitignored local.nix
+  # visible (see README). Point it at wherever you keep this flake.
   programs.nh = {
     enable = true;
     flake = "path:/home/${username}/nnn-starter";

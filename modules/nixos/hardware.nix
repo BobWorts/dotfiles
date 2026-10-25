@@ -1,6 +1,5 @@
 {pkgs, ...}: {
-  # Sensible hardware defaults for a modern Intel laptop (tested on a ThinkPad
-  # X1 Carbon Gen 13 / Lunar Lake). All generic enough to keep in the starter.
+  # Intel laptop defaults (tested on a ThinkPad X1 Carbon Gen 13 / Lunar Lake).
 
   # GPU video acceleration. hardware.graphics is enabled in desktop.nix; this
   # adds the VA-API / QSV runtimes so browsers and players decode/encode video

@@ -35,10 +35,8 @@
   } @ inputs: let
     hostSystem = "x86_64-linux";
 
-    # Personal, machine-local settings: `local.nix` is gitignored. Flakes only
-    # see git-tracked files, so build through `path:` (`nh` is preconfigured
-    # with it; see README). On a fresh clone (and in CI) the tracked example
-    # stands in.
+    # Machine-local settings; `local.nix` is gitignored, so build through
+    # `path:` (see README). A fresh clone / CI falls back to the example.
     local =
       if builtins.pathExists ./local.nix
       then import ./local.nix

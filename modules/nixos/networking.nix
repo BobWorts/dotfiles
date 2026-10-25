@@ -7,9 +7,7 @@
     allowedUDPPorts = [];
   };
 
-  # Keep the clock correct over NTP. A skewed clock is the #1 cause of bogus
-  # TLS "certificate not valid yet / expired" errors in the browser, since cert
-  # validity is checked against system time.
+  # NTP: a skewed clock causes bogus TLS certificate errors.
   services.timesyncd.enable = true;
 
   # Faster name resolution / mDNS for `.local` hosts.
