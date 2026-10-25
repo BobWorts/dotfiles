@@ -17,7 +17,7 @@ run one command, and get a cohesive, themed, developer-ready Wayland desktop.
 | Compositor   | [niri](https://github.com/YaLTeR/niri) (scrollable-tiling Wayland) via [niri-flake](https://github.com/sodiboo/niri-flake) |
 | Shell/UI     | [Noctalia](https://github.com/noctalia-dev/noctalia-shell) **v5** (bar, launcher, notifications, lock, control center) |
 | Theming      | [Stylix](https://github.com/nix-community/stylix) with the **Kanagawa** palette, one scheme themes everything |
-| Terminal     | [Ghostty](https://ghostty.org) |
+| Terminal     | [kitty](https://sw.kovidgoyal.net/kitty/) |
 | Shell + prompt | Zsh + [Starship](https://starship.rs) (autosuggestions, syntax highlighting, fzf, zoxide) |
 | Editor (GUI) | [Zed](https://zed.dev), themed via Stylix, default handler for text/source files |
 | Editor (terminal) | Neovim, preconfigured (LSP, treesitter, telescope, completion), the `$EDITOR` |
@@ -90,7 +90,7 @@ flake.nix              # inputs, nixosConfiguration, formatter, devShells
 local.example.nix      # template for machine-local identity (copy to local.nix)
 hosts/example/         # host: hardware + locale
 modules/nixos/         # system: boot, audio, niri, noctalia, stylix, users…
-modules/home/          # user: zsh, ghostty, neovim, niri keybinds, cli tools…
+modules/home/          # user: zsh, kitty, neovim, niri keybinds, cli tools…
 themes/kanagawa.yaml   # vendored base16 palette (Stylix source of truth)
 ```
 
@@ -98,7 +98,7 @@ themes/kanagawa.yaml   # vendored base16 palette (Stylix source of truth)
 
 | Keys | Action |
 |------|--------|
-| `Mod`+`Return` | Terminal (ghostty) |
+| `Mod`+`Return` | Terminal (kitty) |
 | `Mod`+`Space` | Noctalia launcher |
 | `Mod`+`B` | Browser (Zen) |
 | `Mod`+`E` | File manager (Nautilus) |

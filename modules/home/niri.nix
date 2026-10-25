@@ -60,7 +60,7 @@
     # niri-flake form: `action.<name> = <args>`. Spawn takes a string or argv list.
     binds = {
       # Launchers
-      "Mod+Return".action.spawn = "ghostty";
+      "Mod+Return".action.spawn = "kitty";
       # Noctalia v5 IPC: `noctalia msg <command>` (the old `ipc call` form and
       # the `noctalia-shell` binary are gone). The launcher is a named panel.
       "Mod+Space".action.spawn = [
