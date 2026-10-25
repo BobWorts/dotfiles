@@ -5,7 +5,6 @@
     ./starship.nix
     ./git.nix
     ./kitty.nix
-    ./neovim.nix
     ./zed.nix
     ./gtk.nix
     ./niri.nix

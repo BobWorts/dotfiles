@@ -20,7 +20,7 @@ run one command, and get a cohesive, themed, developer-ready Wayland desktop.
 | Terminal     | [kitty](https://sw.kovidgoyal.net/kitty/) |
 | Shell + prompt | Zsh + [Starship](https://starship.rs) (autosuggestions, syntax highlighting, fzf, zoxide) |
 | Editor (GUI) | [Zed](https://zed.dev), themed via Stylix, default handler for text/source files |
-| Editor (terminal) | Neovim, preconfigured (LSP, treesitter, telescope, completion), the `$EDITOR` |
+| Editor (terminal) | nano, the `$EDITOR` |
 | Browser      | [Zen](https://zen-browser.app) (beta channel, via the community flake) |
 | File manager | [Nautilus](https://apps.gnome.org/Nautilus/) (GNOME Files) |
 | Font         | Maple Mono NF |
@@ -90,7 +90,7 @@ flake.nix              # inputs, nixosConfiguration, formatter, devShells
 local.example.nix      # template for machine-local identity (copy to local.nix)
 hosts/example/         # host: hardware + locale
 modules/nixos/         # system: boot, audio, niri, noctalia, stylix, users…
-modules/home/          # user: zsh, kitty, neovim, niri keybinds, cli tools…
+modules/home/          # user: zsh, kitty, niri keybinds, cli tools…
 themes/kanagawa.yaml   # vendored base16 palette (Stylix source of truth)
 ```
 

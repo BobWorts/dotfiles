@@ -34,8 +34,6 @@
       df = "duf";
       ps = "procs";
       ping = "gping";
-      vim = "nvim";
-      vi = "nvim";
       g = "git";
       lg = "lazygit";
 
@@ -53,4 +51,6 @@
       ${pkgs.any-nix-shell}/bin/any-nix-shell zsh | source /dev/stdin
     '';
   };
+
+  home.sessionVariables.EDITOR = "nano";
 }
