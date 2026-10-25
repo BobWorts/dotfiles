@@ -13,10 +13,7 @@
     ./qemu.nix
   ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
 
   # Pull niri and noctalia as prebuilt binaries instead of compiling them.
@@ -37,6 +34,6 @@
 
   # (allowUnfree + overlays are set in flake.nix where the inputs are in scope.)
 
-  # A lean system-wide package set; everything user-facing lives in home-manager.
+  # A lean system-wide package set. Everything user-facing lives in home-manager.
   environment.systemPackages = [];
 }

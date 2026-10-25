@@ -3,12 +3,12 @@
   pkgs,
   ...
 }: {
-  # Zed — the GUI code editor. Neovim stays the terminal `$EDITOR`
-  # (see modules/home/neovim.nix); Zed is what opens when you double-click a
+  # Zed, the GUI code editor. Neovim stays the terminal `$EDITOR`
+  # (see modules/home/neovim.nix). Zed is what opens when you double-click a
   # text file in Nautilus or pick "open with default" from anywhere else.
   #
   # Stylix's zed target syncs our Maple Mono / Noto fonts into Zed. For the
-  # colors we don't use Stylix's mechanically-generated "Base16 Kanagawa" — its
+  # colors we don't use Stylix's mechanically-generated "Base16 Kanagawa". Its
   # base16 mapping makes keywords a harsh red and its template emits an
   # appearance Zed rejects. Instead we use the hand-tuned "Kanagawa Wave" from
   # the kanagawa-themes extension (declared below so it installs reproducibly).
@@ -32,7 +32,7 @@
       # File-type icons from the catppuccin-icons extension above.
       icon_theme = "Catppuccin Frappé";
 
-      # Nix owns the package; don't let Zed try to update itself.
+      # Nix owns the package. Don't let Zed try to update itself.
       auto_update = false;
 
       telemetry = {
@@ -88,7 +88,7 @@
     };
   };
 
-  # The zed-editor package only ships a `zeditor` binary; add a `zed` symlink
+  # The zed-editor package only ships a `zeditor` binary. Add a `zed` symlink
   # so the obvious command works from a terminal (and from scripts/other tools,
   # which a shell alias wouldn't cover).
   home.packages = [

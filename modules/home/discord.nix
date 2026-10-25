@@ -6,7 +6,7 @@
   # Theming is automatic: Stylix has a vesktop target (enabled by stylix.enable
   # in modules/nixos/stylix.nix) that writes a full base16 theme to
   # ~/.config/vesktop/themes/stylix.css and adds it to Vencord's enabledThemes,
-  # so Discord tracks the same Kanagawa palette as everything else — no custom
+  # so Discord tracks the same Kanagawa palette as everything else, no custom
   # CSS needed here.
   programs.vesktop = {
     enable = true;

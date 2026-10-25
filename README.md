@@ -1,10 +1,10 @@
 # nnn-starter
 
 <p align="center">
-  <img src="media/screenshot.png" alt="Screenshot of the NNN desktop — Niri + Noctalia on NixOS" width="100%">
+  <img src="media/screenshot.png" alt="Screenshot of the NNN desktop, Niri + Noctalia on NixOS" width="100%">
 </p>
 
-> Three letters, zero compromise — now with batteries included.
+> Three letters, zero compromise, now with batteries included.
 
 An opinionated [omarchy](https://omarchy.org)-style NixOS starter for the [**NNN
 stack**](https://the-nnn-stack.github.io/): **N**ixOS + **N**iri + **N**octalia. Clone it, set two placeholders,
@@ -16,11 +16,11 @@ run one command, and get a cohesive, themed, developer-ready Wayland desktop.
 |--------------|--------|
 | Compositor   | [niri](https://github.com/YaLTeR/niri) (scrollable-tiling Wayland) via [niri-flake](https://github.com/sodiboo/niri-flake) |
 | Shell/UI     | [Noctalia](https://github.com/noctalia-dev/noctalia-shell) **v5** (bar, launcher, notifications, lock, control center) |
-| Theming      | [Stylix](https://github.com/nix-community/stylix) with the **Kanagawa** palette — one scheme themes everything |
+| Theming      | [Stylix](https://github.com/nix-community/stylix) with the **Kanagawa** palette, one scheme themes everything |
 | Terminal     | [Ghostty](https://ghostty.org) |
 | Shell + prompt | Zsh + [Starship](https://starship.rs) (autosuggestions, syntax highlighting, fzf, zoxide) |
-| Editor (GUI) | [Zed](https://zed.dev) — themed via Stylix; default handler for text/source files |
-| Editor (terminal) | Neovim, preconfigured (LSP, treesitter, telescope, completion); the `$EDITOR` |
+| Editor (GUI) | [Zed](https://zed.dev), themed via Stylix, default handler for text/source files |
+| Editor (terminal) | Neovim, preconfigured (LSP, treesitter, telescope, completion), the `$EDITOR` |
 | Browser      | [Zen](https://zen-browser.app) (beta channel, via the community flake) |
 | File manager | [Nautilus](https://apps.gnome.org/Nautilus/) (GNOME Files) |
 | Font         | Maple Mono NF |
@@ -63,15 +63,15 @@ After the first build, rebuild with `nh os switch` (aliased to `rebuild`) or
 
 ## Placeholders to edit
 
-Your personal settings live in one place — `local.nix`. It is gitignored, so
+Your personal settings live in one place, `local.nix`. It is gitignored, so
 your real values never reach git history. The tracked
 [`local.example.nix`](local.example.nix) is the template: copy it once (step 3)
-and fill it in. When `local.nix` is absent — a fresh clone, or CI — the flake
+and fill it in. When `local.nix` is absent (a fresh clone, or CI) the flake
 falls back to the example (and warns during evaluation), so evaluation always
 succeeds.
 
 > Because flakes skip gitignored files, always build through `path:<repo>` (see
-> step 4; `nh` is preconfigured with it). A plain `--flake .` build would not
+> step 4, and `nh` is preconfigured with it). A plain `--flake .` build would not
 > see `local.nix` at all.
 
 | What | Where |
@@ -163,10 +163,10 @@ nixos-rebuild build-vm --flake .#example
 [`.github/workflows/check.yml`](.github/workflows/check.yml) runs on every push
 and PR:
 
-- **eval** — `nix flake check --no-build` evaluates the whole config (the fast,
-  reliable signal: catches option typos and niri schema errors).
-- **lint** — `alejandra --check`, `statix`, `deadnix`.
-- **build** — realises the full system closure; runs on `main` / manual
+- **eval**: `nix flake check --no-build` evaluates the whole config. It is the
+  fast, reliable signal, and catches option typos and niri schema errors.
+- **lint**: `alejandra --check`, `statix`, `deadnix`.
+- **build**: realises the full system closure. Runs on `main` / manual
   dispatch. niri and noctalia are pulled prebuilt from their cachix caches
   (`niri.cachix.org`, `noctalia.cachix.org`), so it finishes in minutes instead
   of compiling C++/Rust from source. Delete the job if you don't want it.
@@ -186,13 +186,13 @@ and PR:
 ### Binary caches (no source builds)
 
 niri and noctalia would otherwise compile from source (noctalia's C++ tree alone
-is ~an hour). To avoid that, the flake pins **noctalia to its `cachix` branch**
-— upstream force-pushes there only after a commit's package is built and pushed
+is ~an hour). To avoid that, the flake pins **noctalia to its `cachix` branch**,
+and upstream force-pushes there only after a commit's package is built and pushed
 to `noctalia.cachix.org`, so `inputs.noctalia.packages.<sys>.default` is always a
-cache hit. It still tracks the **v5 line** (`main`), just slightly behind; the
+cache hit. It still tracks the **v5 line** (`main`), just slightly behind. The
 old series lives on `legacy-v4`. niri uses niri-flake's prebuilt
 `niri-stable` from `niri.cachix.org` for the same reason.
 
 The two caches are trusted in [`modules/nixos/default.nix`](modules/nixos/default.nix)
-so your machine pulls binaries too. Neither input may `follows` our `nixpkgs` —
-that would rebuild them against a different nixpkgs and miss the cache.
+so your machine pulls binaries too. Neither input may `follows` our `nixpkgs`.
+That would rebuild them against a different nixpkgs and miss the cache.

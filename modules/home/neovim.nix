@@ -10,7 +10,7 @@
     viAlias = true;
     vimAlias = true;
 
-    # We don't use the Ruby/Python remote-plugin providers; opt out explicitly
+    # We don't use the Ruby/Python remote-plugin providers. Opt out explicitly
     # (also matches the new home-manager defaults and silences the warning).
     withRuby = false;
     withPython3 = false;

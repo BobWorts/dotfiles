@@ -39,9 +39,9 @@
       ];
       default-column-width.proportion = 1.0 / 2.0;
       # Stylix disables the focus-ring and themes the border instead, then we
-      # disable that border below — so re-enable the ring explicitly here or
+      # disable that border below, so re-enable the ring explicitly here or
       # nothing gets drawn. Thin, soft Kanagawa foreground on the focused
-      # window; transparent on the rest so only the selected one is outlined.
+      # window. Transparent on the rest so only the selected one is outlined.
       focus-ring = {
         enable = true;
         width = 2;
@@ -54,10 +54,10 @@
     # noctalia is started as a systemd user service bound to the niri session
     # (see modules/home/noctalia.nix), so no spawn-at-startup needed.
 
-    # Subtle, fast animations — omarchy-style polish without distraction.
+    # Subtle, fast animations, omarchy-style polish without distraction.
     animations.slowdown = 0.7;
 
-    # niri-flake form: `action.<name> = <args>`; spawn takes a string or argv list.
+    # niri-flake form: `action.<name> = <args>`. Spawn takes a string or argv list.
     binds = {
       # Launchers
       "Mod+Return".action.spawn = "ghostty";

@@ -1,6 +1,4 @@
 {
-  description = "nnn-starter — an opinionated NixOS starter for the NNN stack (NixOS + Niri + Noctalia)";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -35,18 +33,17 @@
   } @ inputs: let
     hostSystem = "x86_64-linux";
 
-    # Machine-local settings; `local.nix` is gitignored, so build through
+    # Machine-local settings. `local.nix` is gitignored, so build through
     # `path:` (see README). A fresh clone / CI falls back to the example.
     local =
       if builtins.pathExists ./local.nix
       then import ./local.nix
       else
         builtins.trace
-        "warning: local.nix not found — using local.example.nix placeholders. Build with `path:<repo>` so the gitignored file is visible."
+        "warning: local.nix not found, using local.example.nix placeholders. Build with `path:<repo>` so the gitignored file is visible."
         (import ./local.example.nix);
     inherit (local) username;
 
-    # Linux systems for `nix fmt` / `nix develop`.
     devSystems = [
       "x86_64-linux"
       "aarch64-linux"
@@ -69,7 +66,7 @@
         {
           nixpkgs.config.allowUnfree = true;
           # Vesktop builds Vencord with pnpm, which nixpkgs currently marks
-          # insecure. It's a build-time tool only; allow it by name so the rule
+          # insecure. It's a build-time tool only. Allow it by name so the rule
           # survives pnpm version bumps. (See modules/home/discord.nix.)
           nixpkgs.config.allowInsecurePredicate = pkg: nixpkgs.lib.getName pkg == "pnpm";
           nixpkgs.overlays = [
@@ -96,7 +93,7 @@
     # `nix fmt`
     formatter = forAllSystems (system: (pkgsFor system).alejandra);
 
-    # `nix develop` — tooling for hacking on this repo.
+    # Tooling for hacking on this repo (`nix develop`).
     devShells = forAllSystems (system: {
       default = (pkgsFor system).mkShell {
         packages = with pkgsFor system; [

@@ -6,7 +6,7 @@
   # imv: minimal Wayland image viewer. `q` quits, arrows/`n`/`p` cycle a folder.
   programs.imv.enable = true;
 
-  # mpv: does-everything media player. Sane defaults; tweak in the settings set.
+  # mpv: does-everything media player. Sane defaults, tweak in the settings set.
   programs.mpv = {
     enable = true;
     config = {
@@ -17,7 +17,7 @@
   };
 
   # Make them the default handlers. zed.nix already sets `xdg.mimeApps.enable`
-  # and claims the text/* types; these attrsets merge across modules, so we only
+  # and claims the text/* types. These attrsets merge across modules, so we only
   # add the image/audio/video associations here (don't re-set `enable`, which
   # would be a conflicting definition).
   xdg.mimeApps.defaultApplications = let

@@ -6,7 +6,7 @@
   imports = [inputs.zen-browser.homeModules.beta];
 
   home.packages = [
-    # gvfs (modules/nixos/desktop.nix) adds trash + mounting; the gtk portal
+    # gvfs (modules/nixos/desktop.nix) adds trash + mounting. The gtk portal
     # uses it as the file picker.
     pkgs.nautilus
   ];

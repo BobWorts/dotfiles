@@ -1,5 +1,5 @@
 {...}: {
-  # PipeWire is the modern audio stack; disable PulseAudio in favour of it.
+  # PipeWire is the modern audio stack. PulseAudio is disabled in favour of it.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 

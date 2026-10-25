@@ -3,7 +3,7 @@
     enable = true;
     enableZshIntegration = true;
 
-    # Font + colors are supplied by Stylix; these are the ergonomic extras.
+    # Font + colors are supplied by Stylix. These are the ergonomic extras.
     settings = {
       window-padding-x = 12;
       window-padding-y = 12;

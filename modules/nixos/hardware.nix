@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   # Intel laptop defaults (tested on a ThinkPad X1 Carbon Gen 13 / Lunar Lake).
 
-  # GPU video acceleration. hardware.graphics is enabled in desktop.nix; this
+  # GPU video acceleration. hardware.graphics is enabled in desktop.nix. This
   # adds the VA-API / QSV runtimes so browsers and players decode/encode video
   # on the iGPU instead of the CPU (the single biggest battery win on Intel).
   #   intel-media-driver → the modern `iHD` VA-API driver (Gen8+ / Xe / Arc)
@@ -15,8 +15,8 @@
   # `vainfo` for inspecting the available decode/encode profiles.
   environment.systemPackages = [pkgs.libva-utils];
 
-  # Intel thermal management daemon — keeps temps/throttling sane under load.
-  # Standard on Intel laptops; complements (does not conflict with) the
+  # Intel thermal management daemon, keeps temps/throttling sane under load.
+  # Standard on Intel laptops. Complements (does not conflict with) the
   # power-profiles-daemon used by the desktop.
   #   ignoreCpuidCheck: newer Intel CPUs (e.g. Lunar Lake, family 6 model 0xbd)
   #   aren't in thermald's built-in model table yet, so it would otherwise exit
@@ -33,8 +33,8 @@
   services.hardware.bolt.enable = true;
 
   # Compressed RAM swap. Faster than the disk swap partition and saves NVMe
-  # wear; with 32 GB RAM the default (50% of RAM) is plenty of headroom.
-  # (Note: too small to hibernate 32 GB — that still needs a disk swap ≥ RAM.)
+  # wear. With 32 GB RAM the default (50% of RAM) is plenty of headroom.
+  # (Too small to hibernate 32 GB. Hibernation needs a disk swap as big as RAM.)
   zramSwap.enable = true;
 
   # Fingerprint reader (enroll with `fprintd-enroll`). Wires fingerprint auth
