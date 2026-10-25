@@ -7,8 +7,8 @@
 
     input = {
       keyboard.xkb = {
-        layout = "us,ru";
-        options = "grp:alt_shift_toggle"; # Alt+Shift switches US <-> Russian
+        layout = local.keyboardLayouts; # defined once in local.nix
+        options = local.keyboardOptions;
       };
       # Each window remembers its own layout ("global" = one shared layout).
       keyboard.track-layout = "window";
@@ -26,7 +26,7 @@
 
     # ⇩ EDIT ME: name your outputs (`niri msg outputs` lists them) for scale/pos.
     outputs."eDP-1" = {
-      scale = local.monitorScale;
+      scale = 1.0;
     };
 
     layout = {

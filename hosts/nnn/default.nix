@@ -5,14 +5,14 @@
 
   networking.hostName = local.hostName;
 
-  # ⇩ Timezone comes from local.nix; locale/keyboard layout below.
+  # ⇩ Timezone and keyboard come from local.nix; the system locale is fixed here.
   time.timeZone = local.timeZone;
   i18n.defaultLocale = "en_US.UTF-8";
 
   services.xserver.xkb = {
-    layout = "us,ru";
+    layout = local.keyboardLayouts;
     variant = "";
-    options = "grp:alt_shift_toggle"; # Alt+Shift switches US <-> Russian
+    options = local.keyboardOptions; # e.g. Alt+Shift switches US <-> Russian
   };
   console.keyMap = "us";
 

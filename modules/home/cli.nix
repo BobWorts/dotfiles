@@ -70,9 +70,10 @@
   ];
 
   # nh is a nicer frontend for nixos-rebuild + garbage collection. Point it at
-  # wherever you keep this flake checked out.
+  # wherever you keep this flake checked out. The `path:` prefix makes flakes
+  # copy the whole directory, so the gitignored local.nix is actually seen.
   programs.nh = {
     enable = true;
-    flake = "/home/${username}/nnn-starter";
+    flake = "path:/home/${username}/nnn-starter";
   };
 }

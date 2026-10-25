@@ -9,28 +9,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Scrollable-tiling Wayland compositor + NixOS/home-manager modules.
-    # Deliberately does NOT follow our nixpkgs, so niri-flake's prebuilt
-    # packages stay byte-identical to what niri.cachix.org has cached.
     niri.url = "github:sodiboo/niri-flake";
-
-    # Noctalia desktop shell (v5 line). Pinned to the `cachix` branch: upstream
-    # force-pushes there only after a commit's package is built and pushed to
-    # noctalia.cachix.org, so `packages.default` is guaranteed to be a cache hit
-    # (no ~hour-long C++ source build). It tracks `main` (v5), just slightly
-    # behind. Crucially we do NOT make it follow our nixpkgs — that would
-    # rebuild it against a different nixpkgs and miss the cache.
     noctalia.url = "github:noctalia-dev/noctalia-shell/cachix";
 
-    # System-wide base16 theming.
     stylix = {
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Zen browser (not in nixpkgs). It's a repackaged binary (fixed-output
-    # download + wrapFirefox), so following our nixpkgs is cheap and avoids a
-    # duplicate nixpkgs in the closure.
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,13 +33,19 @@
     stylix,
     ...
   } @ inputs: let
-    # The platform the NNN machine runs on.
     hostSystem = "x86_64-linux";
 
-    # Personal, machine-local settings. Tracked with placeholder defaults but
-    # marked skip-worktree so your real values never get committed:
-    #   git update-index --skip-worktree local.nix
-    local = import ./local.nix;
+    # Personal, machine-local settings: `local.nix` is gitignored. Flakes only
+    # see git-tracked files, so build through `path:` (`nh` is preconfigured
+    # with it; see README). On a fresh clone (and in CI) the tracked example
+    # stands in.
+    local =
+      if builtins.pathExists ./local.nix
+      then import ./local.nix
+      else
+        builtins.trace
+        "warning: local.nix not found — using local.example.nix placeholders. Build with `path:<repo>` so the gitignored file is visible."
+        (import ./local.example.nix);
     inherit (local) username;
 
     # Linux systems for `nix fmt` / `nix develop`.

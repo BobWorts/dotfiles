@@ -44,42 +44,47 @@ cd ~/nnn-starter
 # 2. Generate real hardware config for THIS machine.
 sudo nixos-generate-config --show-hardware-config > hosts/nnn/hardware-configuration.nix
 
-# 3. Put your identity in local.nix (see Placeholders below), then keep your
-#    edits out of git history:
-git update-index --skip-worktree local.nix
+# 3. Copy the personal-settings template and fill in your identity.
+cp local.example.nix local.nix
+$EDITOR local.nix
 
-# 4. Build & switch.
-sudo nixos-rebuild switch --flake .#nnn
+# 4. Build & switch. `path:` is required: flakes only see git-tracked files,
+#    and local.nix is gitignored.
+sudo nixos-rebuild switch --flake path:.#nnn
 ```
 
 After the first build, rebuild with `nh os switch` (aliased to `rebuild`) or
-`update` (which also bumps `flake.lock`).
+`update` (which also bumps `flake.lock`). Home Manager configures `nh` with the
+`path:` prefix too, so the gitignored `local.nix` stays visible.
 
 ## Placeholders to edit
 
-Your personal settings live in one place — [`local.nix`](local.nix). It's
-tracked with neutral defaults but marked `skip-worktree` (step 3) so your real
-values never get staged or committed.
+Your personal settings live in one place — `local.nix`. It is gitignored, so
+your real values never reach git history. The tracked
+[`local.example.nix`](local.example.nix) is the template: copy it once (step 3)
+and fill it in. When `local.nix` is absent — a fresh clone, or CI — the flake
+falls back to the example (and warns during evaluation), so evaluation always
+succeeds.
+
+> Because flakes skip gitignored files, always build through `path:<repo>` (see
+> step 4; `nh` is preconfigured with it). A plain `--flake .` build would not
+> see `local.nix` at all.
 
 | What | Where |
 |------|-------|
-| **Username, hostname, full name** | [`local.nix`](local.nix) |
-| **Git identity** (name, email) | [`local.nix`](local.nix) |
-| **Timezone** | [`local.nix`](local.nix) |
-| **Monitor scale** | [`local.nix`](local.nix) |
+| **Username, hostname, full name** | `local.nix` |
+| **Git identity** (name, email) | `local.nix` |
+| **Timezone** | `local.nix` |
+| **Keyboard layouts** | `local.nix` |
 | **Hardware** | `hosts/nnn/hardware-configuration.nix` (generated, step 2 above) |
-| **Locale / keyboard layout** | [`hosts/nnn/default.nix`](hosts/nnn/default.nix) |
-| **Monitor name / position** | `outputs` in [`modules/home/niri.nix`](modules/home/niri.nix) |
-
-> Editing the defaults themselves (e.g. to change the placeholders this repo
-> ships) needs `git update-index --no-skip-worktree local.nix` first.
+| **Locale** | [`hosts/nnn/default.nix`](hosts/nnn/default.nix) |
 
 ## Layout
 
 ```
 flake.nix              # inputs + the single `nixosConfigurations.nnn`
-local.nix              # your machine-local identity (skip-worktree)
-hosts/nnn/             # host: hardware + locale/timezone
+local.example.nix      # template for machine-local identity (copy to local.nix)
+hosts/nnn/             # host: hardware + locale
 modules/nixos/         # system: boot, audio, niri, noctalia, stylix, users…
 modules/home/          # user: zsh, ghostty, neovim, niri keybinds, cli tools…
 themes/kanagawa.yaml   # vendored base16 palette (Stylix source of truth)

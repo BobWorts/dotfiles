@@ -3,6 +3,9 @@ result
 result-*
 .direnv/
 
+# Personal settings (copy from local.example.nix)
+local.nix
+
 # Editor
 .luarc.json
 
