@@ -48,28 +48,27 @@ sudo nixos-generate-config --show-hardware-config > hosts/example/hardware-confi
 cp local.example.nix local.nix
 $EDITOR local.nix
 
-# 4. Build & switch. `path:` is required: flakes only see git-tracked files,
-#    and local.nix is gitignored.
+# 4. Build & switch. `path:` is needed so the gitignored local.nix is visible.
+#    The attr is your `hostName` (`example` unless you changed it).
 sudo nixos-rebuild switch --flake path:.#example
 ```
 
 After the first build, rebuild with `nh os switch` (aliased to `rebuild`) or
-`update` (which also bumps `flake.lock`). Home Manager configures `nh` with the
-`path:` prefix too, so the gitignored `local.nix` stays visible.
+`update` (which also bumps `flake.lock`). The `nh` aliases already build with
+`path:` too.
 
-`nh` picks the config by your machine's hostname, so the flake attr must match
-`hostName` from `local.nix` (both are `example` out of the box). If you change
-`hostName`, rename `hosts/example` and `nixosConfigurations.example` to match.
+`nh` picks the config by your machine's hostname, and the flake attr follows
+`hostName` from `local.nix`, so there is nothing to rename.
 
 ## Placeholders to edit
 
-Your personal settings live in one place, `local.nix`. It is gitignored, so
-your real values never reach git history. The tracked
-[`local.example.nix`](local.example.nix) is the template: copy it once (step 3)
+Your personal settings live in one place, `local.nix`. The tracked
+[`local.example.nix`](local.example.nix) is the template, copy it once (step 3)
 and fill it in. When `local.nix` is absent (a fresh clone, or CI) the flake
 falls back to the example (and warns during evaluation), so evaluation always
 succeeds.
 
+> `local.nix` is gitignored, so your real values never reach git history.
 > Because flakes skip gitignored files, always build through `path:<repo>` (see
 > step 4, and `nh` is preconfigured with it). A plain `--flake .` build would not
 > see `local.nix` at all.
@@ -87,7 +86,7 @@ succeeds.
 ## Layout
 
 ```
-flake.nix              # inputs + the single `nixosConfigurations.example`
+flake.nix              # inputs, nixosConfiguration, formatter, devShells
 local.example.nix      # template for machine-local identity (copy to local.nix)
 hosts/example/         # host: hardware + locale
 modules/nixos/         # system: boot, audio, niri, noctalia, stylix, users…
@@ -141,7 +140,9 @@ devShells.default = pkgs.mkShell { packages = [ pkgs.nodejs pkgs.cargo ]; };
 
 ## Verifying changes
 
-Everything evaluates/lints locally without a NixOS build:
+Everything evaluates/lints locally without a NixOS build. The flake attr is
+named after `hostName` from `local.nix` (`example` out of the box), so swap
+`example` below when yours differs:
 
 ```sh
 nix flake check                                              # evaluate everything
@@ -154,7 +155,7 @@ nix eval .#nixosConfigurations.example.config.system.build.toplevel.drvPath
 On a NixOS box you can smoke-test in a VM:
 
 ```sh
-nixos-rebuild build-vm --flake .#example
+nixos-rebuild build-vm --flake path:.#example
 ./result/bin/run-example-vm
 ```
 

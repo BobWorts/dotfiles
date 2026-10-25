@@ -32,26 +32,19 @@
     ...
   } @ inputs: let
     hostSystem = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${hostSystem};
 
-    # Machine-local settings. `local.nix` is gitignored, so build through
-    # `path:` (see README). A fresh clone / CI falls back to the example.
+    # `local.nix` is gitignored, so a fresh clone or CI falls back to the example.
     local =
       if builtins.pathExists ./local.nix
       then import ./local.nix
       else
         builtins.trace
-        "warning: local.nix not found, using local.example.nix placeholders. Build with `path:<repo>` so the gitignored file is visible."
+        "warning: local.nix not found, using local.example.nix. Build with path:<repo> to see a gitignored local.nix."
         (import ./local.example.nix);
     inherit (local) username;
-
-    devSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-    ];
-    forAllSystems = nixpkgs.lib.genAttrs devSystems;
-    pkgsFor = system: nixpkgs.legacyPackages.${system};
   in {
-    nixosConfigurations.example = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.${local.hostName} = nixpkgs.lib.nixosSystem {
       system = hostSystem;
       specialArgs = {inherit inputs username local;};
       modules = [
@@ -91,19 +84,17 @@
     };
 
     # `nix fmt`
-    formatter = forAllSystems (system: (pkgsFor system).alejandra);
+    formatter.x86_64-linux = pkgs.alejandra;
 
     # Tooling for hacking on this repo (`nix develop`).
-    devShells = forAllSystems (system: {
-      default = (pkgsFor system).mkShell {
-        packages = with pkgsFor system; [
-          alejandra
-          statix
-          deadnix
-          nh
-          nix-output-monitor
-        ];
-      };
-    });
+    devShells.x86_64-linux.default = pkgs.mkShell {
+      packages = with pkgs; [
+        alejandra
+        statix
+        deadnix
+        nh
+        nix-output-monitor
+      ];
+    };
   };
 }
