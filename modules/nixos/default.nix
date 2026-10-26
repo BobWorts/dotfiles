@@ -13,10 +13,15 @@
     ./qemu.nix
   ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
 
-  # Pull niri and noctalia as prebuilt binaries instead of compiling them.
   nix.settings.extra-substituters = [
     "https://niri.cachix.org"
     "https://noctalia.cachix.org"
@@ -25,15 +30,4 @@
     "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
   ];
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d";
-  };
-
-  # (allowUnfree + overlays are set in flake.nix where the inputs are in scope.)
-
-  # A lean system-wide package set. Everything user-facing lives in home-manager.
-  environment.systemPackages = [];
 }

@@ -4,12 +4,12 @@
   local,
   ...
 }: {
-  # ⇩ username/description come from local.nix.
+  # Username/Description come from local.nix.
   users.users.${username} = {
     isNormalUser = true;
     description = local.fullName;
     extraGroups = [
-      "wheel" # sudo
+      "wheel" # Sudo
       "networkmanager"
       "video"
       "audio"
@@ -21,7 +21,6 @@
   # zsh must be enabled at the system level to be a valid login shell.
   programs.zsh.enable = true;
 
-  # Passwordless sudo for the wheel group keeps `nixos-rebuild` snappy. Drop the
-  # `wheelNeedsPassword = false` line if you'd rather be prompted.
+  # Disable sudo password for wheel group to speed up nixos-rebuild.
   security.sudo.wheelNeedsPassword = false;
 }
