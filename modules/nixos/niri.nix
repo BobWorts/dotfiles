@@ -6,14 +6,14 @@
   # Enable niri from niri-flake. The module pulls in systemd units, polkit,
   # the screencast portal and sane session defaults.
   programs.niri.enable = true;
-  # Use niri-flake's own prebuilt package (built against its nixpkgs) so it
-  # comes from niri.cachix.org instead of compiling from source. This is the
-  # exact build the niri-flake settings schema targets.
+  # Upstream's prebuilt package from niri.cachix.org instead of an ~hour of
+  # compiling; matches the settings schema the home config targets.
   programs.niri.package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-stable;
 
   # Wayland portals: gnome backend for screencasting, gtk for file pickers.
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gnome
       pkgs.xdg-desktop-portal-gtk
@@ -37,7 +37,4 @@
       user = "greeter";
     };
   };
-
-  # Brightness keys are handled by brightnessctl (installed in desktop.nix),
-  # which talks to logind and needs no extra privileges in a session.
 }

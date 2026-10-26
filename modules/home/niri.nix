@@ -19,7 +19,7 @@
       };
       mouse = {
         accel-profile = "flat";
-        natural-scroll = true; # match macOS-style scrolling (also set on touchpad)
+        natural-scroll = true; # match touchpad
       };
       focus-follows-mouse.enable = true;
     };
@@ -38,10 +38,8 @@
         {proportion = 2.0 / 3.0;}
       ];
       default-column-width.proportion = 1.0 / 2.0;
-      # Stylix disables the focus-ring and themes the border instead, then we
-      # disable that border below, so re-enable the ring explicitly here or
-      # nothing gets drawn. Thin, soft Kanagawa foreground on the focused
-      # window. Transparent on the rest so only the selected one is outlined.
+      # Stylix themes the focus ring but switches to a border, which is
+      # disabled below, so the ring is re-enabled explicitly here.
       focus-ring = {
         enable = true;
         width = 2;
@@ -54,7 +52,7 @@
     # noctalia is started as a systemd user service bound to the niri session
     # (see modules/home/noctalia.nix), so no spawn-at-startup needed.
 
-    # Subtle, fast animations, omarchy-style polish without distraction.
+    # Subtle, fast animations.
     animations.slowdown = 0.7;
 
     # niri-flake form: `action.<name> = <args>`. Spawn takes a string or argv list.
@@ -73,6 +71,7 @@
       "Mod+E".action.spawn = "nautilus";
 
       # Window management
+      "Mod+Tab".action.spawn = ["noctalia" "msg" "window-switcher" "hold"];
       "Mod+Q".action.close-window = {};
       "Mod+F".action.maximize-column = {};
       "Mod+Shift+F".action.fullscreen-window = {};

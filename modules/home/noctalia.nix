@@ -14,9 +14,10 @@
     # starts and stops with your login.
     systemd.enable = true;
 
-    # Configure the shell interactively via its control center (Mod+Space →
-    # settings) and, once you're happy, pin the values declaratively here under
-    # `settings = { ... };` (schema at docs.noctalia.dev). Left at defaults so
-    # the build can't break on a settings key that doesn't exist yet.
+    # Configure the rest interactively via its control center (Mod+Space →
+    # settings) and, once you're happy, pin values here (schema at
+    # docs.noctalia.dev).
+    # Switcher: compact strip of window cards instead of the carousel.
+    settings.shell.window_switcher.style = "compact";
   };
 }
