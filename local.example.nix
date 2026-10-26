@@ -1,12 +1,11 @@
-# Personal, machine-local settings.
-# Copy to `local.nix` (gitignored) and fill in your real values.
+# Personal, machine-local settings. Copy to `local.nix` and fill in.
 {
-  # Login user and machine identity.
   username = "example";
   hostName = "example";
   fullName = "Your Name"; # Shown as the user account description
 
-  # Locale / location.
+  autoLogin = false;
+
   timeZone = "UTC";
 
   # Git identity (modules/home/git.nix).
