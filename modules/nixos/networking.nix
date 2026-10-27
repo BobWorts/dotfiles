@@ -7,11 +7,11 @@
     allowedUDPPorts = [];
   };
 
-  # NTP: a skewed clock causes bogus TLS certificate errors.
-  services.timesyncd.enable = true;
-
-  # Faster name resolution / mDNS for `.local` hosts.
+  # Local DNS stub; NetworkManager hands it per-connection DNS automatically.
   services.resolved.enable = true;
+
+  # mDNS for `.local` names (NAS, printers, ssh). The module opens UDP 5353 in
+  # the firewall itself.
   services.avahi = {
     enable = true;
     nssmdns4 = true;
