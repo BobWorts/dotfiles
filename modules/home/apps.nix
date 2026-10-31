@@ -11,6 +11,16 @@
     pkgs.nautilus
   ];
 
+  # Standard ~/Documents, ~/Downloads, ~/Pictures, ... for the Nautilus
+  # sidebar and Noctalia's screenshot directory.
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+  };
+
+  # "Open containing folder" and friends should land in Nautilus.
+  xdg.mimeApps.defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
+
   # The module (not just the package) registers the mime associations, exports
   # $BROWSER, and exposes the profile for Stylix theming.
   programs.zen-browser = {

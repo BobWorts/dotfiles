@@ -19,5 +19,8 @@
     # docs.noctalia.dev).
     # Switcher: compact strip of window cards instead of the carousel.
     settings.shell.window_switcher.style = "compact";
+    # Needed because the shell itself runs as a systemd user unit: apps launched
+    # from it then survive a shell restart instead of dying with it.
+    settings.shell.launch_apps_as_systemd_services = true;
   };
 }
