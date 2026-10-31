@@ -15,7 +15,5 @@
     ./discord.nix
   ];
 
-  # The HM release this config was first built with; independent of the system
-  # stateVersion.
   home.stateVersion = "25.05";
 }
