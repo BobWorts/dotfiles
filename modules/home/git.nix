@@ -10,7 +10,7 @@
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      merge.conflictstyle = "zdiff3";
+      merge.conflictStyle = "zdiff3";
       diff.colorMoved = "default";
 
       alias = {
@@ -23,7 +23,7 @@
     };
   };
 
-  # delta gives syntax-highlighted, side-by-side diffs (themed by Stylix).
+  # delta: syntax-highlighted, side-by-side pager for git output (not themed by Stylix).
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
@@ -35,9 +35,4 @@
   };
 
   programs.lazygit.enable = true;
-
-  programs.gh = {
-    enable = true;
-    settings.git_protocol = "ssh";
-  };
 }
