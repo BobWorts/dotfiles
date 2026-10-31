@@ -1,4 +1,4 @@
-{username, ...}: {
+{...}: {
   imports = [
     ./cli.nix
     ./zsh.nix
@@ -15,11 +15,7 @@
     ./discord.nix
   ];
 
-  home.username = username;
-  home.homeDirectory = "/home/${username}";
-
-  # Must match the system stateVersion in hosts/example/default.nix.
+  # The HM release this config was first built with; independent of the system
+  # stateVersion.
   home.stateVersion = "25.05";
-
-  programs.home-manager.enable = true;
 }
