@@ -1,9 +1,14 @@
 {pkgs, ...}: {
   # Intel laptop defaults (tested on a ThinkPad X1 Carbon Gen 13 / Lunar Lake).
 
-  # GPU video acceleration. hardware.graphics is enabled in desktop.nix. This
-  # adds the VA-API / QSV runtimes so browsers and players decode/encode video
-  # on the iGPU instead of the CPU (the single biggest battery win on Intel).
+  # Early microcode updates from the firmware. Off by default in nixpkgs;
+  # fixes errata-class CPU bugs before the kernel has a chance to trip on them.
+  hardware.cpu.intel.updateMicrocode = true;
+
+  # GPU video acceleration. hardware.graphics itself is enabled by niri-flake.
+  # These add the VA-API / QSV runtimes so browsers and players decode/encode
+  # video on the iGPU instead of the CPU (the single biggest battery win on
+  # Intel).
   #   intel-media-driver → the modern `iHD` VA-API driver (Gen8+ / Xe / Arc)
   #   vpl-gpu-rt         → oneVPL runtime for QuickSync (QSV) decode/encode
   hardware.graphics.extraPackages = with pkgs; [
@@ -18,9 +23,9 @@
   # Intel thermal management daemon, keeps temps/throttling sane under load.
   # Standard on Intel laptops. Complements (does not conflict with) the
   # power-profiles-daemon used by the desktop.
-  #   ignoreCpuidCheck: newer Intel CPUs (e.g. Lunar Lake, family 6 model 0xbd)
-  #   aren't in thermald's built-in model table yet, so it would otherwise exit
-  #   with "Unsupported cpu model" at boot. Forces it to run with generic config.
+  #   ignoreCpuidCheck: bypasses thermald's CPU/board blocklist. Lunar Lake is
+  #   supported upstream, but the X1 Carbon's Lenovo dytc_lapmode entry makes
+  #   thermald refuse to start otherwise.
   services.thermald.enable = true;
   services.thermald.ignoreCpuidCheck = true;
 
@@ -40,4 +45,8 @@
   # Fingerprint reader (enroll with `fprintd-enroll`). Wires fingerprint auth
   # into PAM for login/sudo via the libfprint stack.
   services.fprintd.enable = true;
+
+  # Lets prebuilt glibc binaries (npm CLIs, random vendor tools, ...) find the
+  # dynamic loader instead of failing on a missing /lib64/ld-linux.so.2.
+  programs.nix-ld.enable = true;
 }
