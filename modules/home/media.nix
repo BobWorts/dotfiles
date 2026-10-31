@@ -1,14 +1,16 @@
 {...}: {
-  # Image viewer + media player. Both are Wayland-native and keyboard-driven,
-  # matching the niri/CLI-forward feel of the rest of the config. Stylix themes
-  # them automatically where it ships a target (autoEnable is on).
+  # Image viewer and media player. Stylix themes mpv's OSD out of the box but
+  # has no imv target, so imv stays stock.
 
-  # imv: minimal Wayland image viewer. `q` quits, arrows/`n`/`p` cycle a folder.
+  # imv: minimal Wayland image viewer. imv-dir opens the file's directory so
+  # n/p cycle the neighbors.
   programs.imv.enable = true;
 
-  # mpv: does-everything media player. Sane defaults, tweak in the settings set.
+  # mpv: video and audio player. MPRIS so playerctl keys and noctalia's media
+  # widget see it.
   programs.mpv = {
     enable = true;
+    scripts = [pkgs.mpvScripts.mpris];
     config = {
       hwdec = "auto-safe"; # GPU decode when the driver supports it, else CPU.
       keep-open = "yes"; # Don't close the window when a file ends.
@@ -16,12 +18,10 @@
     };
   };
 
-  # Make them the default handlers. zed.nix already sets `xdg.mimeApps.enable`
-  # and claims the text/* types. These attrsets merge across modules, so we only
-  # add the image/audio/video associations here (don't re-set `enable`, which
-  # would be a conflicting definition).
+  # zed.nix sets `xdg.mimeApps.enable` and claims text/*; attrsets merge, so
+  # only image/audio/video associations are added here.
   xdg.mimeApps.defaultApplications = let
-    imv = "imv.desktop";
+    imv = "imv-dir.desktop";
     mpv = "mpv.desktop";
   in {
     "image/jpeg" = imv;
@@ -32,6 +32,9 @@
     "image/tiff" = imv;
     "image/avif" = imv;
     "image/svg+xml" = imv;
+    "image/jxl" = imv;
+    "image/heif" = imv;
+    "image/heic" = imv;
 
     "audio/mpeg" = mpv;
     "audio/flac" = mpv;
