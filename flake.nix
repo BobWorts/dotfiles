@@ -7,8 +7,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri.url = "github:sodiboo/niri-flake";
-    noctalia.url = "github:noctalia-dev/noctalia-shell/cachix";
+    niri.url = "github:sodiboo/niri-flake/3c93dc365616";
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     stylix = {
       url = "github:nix-community/stylix";
