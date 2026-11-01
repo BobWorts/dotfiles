@@ -18,7 +18,7 @@
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
-      # Its home-manager module reuses HM's firefox module, so share ours.
+      # Reuse our home-manager input for the firefox module
       inputs.home-manager.follows = "home-manager";
     };
   };
@@ -34,7 +34,7 @@
     hostSystem = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${hostSystem};
 
-    # `local.nix` is gitignored, so a fresh clone or CI falls back to the example.
+    # Gitignored local settings. Fall back to the example on a fresh clone
     local =
       if builtins.pathExists ./local.nix
       then import ./local.nix
@@ -43,51 +43,63 @@
         "warning: local.nix not found, using local.example.nix. Build with path:<repo> to see a gitignored local.nix."
         (import ./local.example.nix);
     inherit (local) username;
+
+    # Real host and the eval-only twin used by CI
+    mkNixosConfig = extraModules:
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs username local;};
+        modules =
+          [
+            niri.nixosModules.niri
+            noctalia.nixosModules.default
+            stylix.nixosModules.stylix
+            home-manager.nixosModules.home-manager
+
+            ./hosts/${local.hostName}
+            ./modules/nixos
+
+            {
+              nixpkgs.hostPlatform = hostSystem;
+              nixpkgs.config.allowUnfree = true;
+              # Vencord needs pnpm at build time and nixpkgs marks it insecure
+              nixpkgs.config.allowInsecurePredicate = pkg: nixpkgs.lib.getName pkg == "pnpm";
+              nixpkgs.overlays = [
+                niri.overlays.niri
+                noctalia.overlays.default
+              ];
+
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "hm-bak";
+              home-manager.extraSpecialArgs = {inherit inputs username local;};
+              # niri-flake imports its home modules per user. Importing them
+              # again duplicates programs.niri.finalConfig
+              home-manager.sharedModules = [
+                noctalia.homeModules.default
+              ];
+              home-manager.users.${username} = import ./modules/home;
+            }
+          ]
+          ++ extraModules;
+      };
   in {
-    nixosConfigurations.${local.hostName} = nixpkgs.lib.nixosSystem {
-      system = hostSystem;
-      specialArgs = {inherit inputs username local;};
-      modules = [
-        niri.nixosModules.niri
-        noctalia.nixosModules.default
-        stylix.nixosModules.stylix
-        home-manager.nixosModules.home-manager
+    nixosConfigurations.${local.hostName} = mkNixosConfig [];
 
-        ./hosts/example
-        ./modules/nixos
+    # Eval-only twin with a dummy root device. CI uses it while
+    # hardware-configuration.nix is still a placeholder
+    nixosConfigurations.ci = mkNixosConfig [
+      {
+        # Avoid a conflict with a generated hardware config
+        fileSystems."/" = nixpkgs.lib.mkForce {
+          device = "/dev/ci-dummy";
+          fsType = "ext4";
+        };
+      }
+    ];
 
-        {
-          nixpkgs.config.allowUnfree = true;
-          # Vesktop builds Vencord with pnpm, which nixpkgs currently marks
-          # insecure. It's a build-time tool only. Allow it by name so the rule
-          # survives pnpm version bumps. (See modules/home/discord.nix.)
-          nixpkgs.config.allowInsecurePredicate = pkg: nixpkgs.lib.getName pkg == "pnpm";
-          nixpkgs.overlays = [
-            niri.overlays.niri
-            noctalia.overlays.default
-          ];
+    formatter.${hostSystem} = pkgs.alejandra;
 
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.backupFileExtension = "hm-bak";
-          home-manager.extraSpecialArgs = {inherit inputs username local;};
-          # niri-flake auto-imports its home modules (config + stylix) into
-          # every user when home-manager runs as a NixOS module, so we only
-          # add noctalia's here. Importing the niri ones again double-declares
-          # `programs.niri.finalConfig`.
-          home-manager.sharedModules = [
-            noctalia.homeModules.default
-          ];
-          home-manager.users.${username} = import ./modules/home;
-        }
-      ];
-    };
-
-    # `nix fmt`
-    formatter.x86_64-linux = pkgs.alejandra;
-
-    # Tooling for hacking on this repo (`nix develop`).
-    devShells.x86_64-linux.default = pkgs.mkShell {
+    devShells.${hostSystem}.default = pkgs.mkShell {
       packages = with pkgs; [
         alejandra
         statix
