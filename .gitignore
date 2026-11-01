@@ -1,13 +1,25 @@
 # Nix
 result
 result-*
+repl-result-*
+*.qcow2
 .direnv/
 
-# Personal settings (copy from local.example.nix)
+# Local settings, not for git
 local.nix
+.envrc.local
 
-# Editor
-.luarc.json
+# AI agent local state
+.opencode/
+.claude/
+.gemini/
+.cursor/
+.extension/
+
+# Editors
+.vscode/
+.idea/
 
 # OS
 .DS_Store
+Thumbs.db
