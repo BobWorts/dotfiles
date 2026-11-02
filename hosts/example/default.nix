@@ -5,18 +5,5 @@
 
   networking.hostName = local.hostName;
 
-  # ⇩ Timezone and keyboard come from local.nix. The system locale is fixed here.
-  time.timeZone = local.timeZone;
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  services.xserver.xkb = {
-    layout = local.keyboardLayouts;
-    variant = "";
-    options = local.keyboardOptions;
-  };
-  console.keyMap = "us";
-
-  # The release this config was written against. Don't bump it casually after
-  # the first install, read the NixOS release notes first.
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }
