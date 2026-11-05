@@ -1,25 +1,21 @@
-{...}: {
-  # Image viewer and media player. Stylix themes mpv's OSD out of the box but
-  # has no imv target, so imv stays stock.
+{pkgs, ...}: {
+  # Stylix themes mpv. imv stays stock
 
-  # imv: minimal Wayland image viewer. imv-dir opens the file's directory so
-  # n/p cycle the neighbors.
+  # imv gets the file's directory, so n and p cycle the neighbors
   programs.imv.enable = true;
 
-  # mpv: video and audio player. MPRIS so playerctl keys and noctalia's media
-  # widget see it.
+  # MPRIS for playerctl keys and the noctalia media widget
   programs.mpv = {
     enable = true;
     scripts = [pkgs.mpvScripts.mpris];
     config = {
-      hwdec = "auto-safe"; # GPU decode when the driver supports it, else CPU.
-      keep-open = "yes"; # Don't close the window when a file ends.
-      save-position-on-quit = "yes"; # Resume long videos where you left off.
+      vo = "gpu-next";
+      hwdec = "auto-safe"; # GPU decode when available, else CPU
+      keep-open = "yes";
+      save-position-on-quit = "yes";
     };
   };
 
-  # zed.nix sets `xdg.mimeApps.enable` and claims text/*; attrsets merge, so
-  # only image/audio/video associations are added here.
   xdg.mimeApps.defaultApplications = let
     imv = "imv-dir.desktop";
     mpv = "mpv.desktop";

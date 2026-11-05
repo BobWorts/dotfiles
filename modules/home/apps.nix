@@ -8,17 +8,20 @@
   programs.zen-browser = {
     enable = true;
     setAsDefaultBrowser = true;
+    profiles.default = {};
   };
   stylix.targets.zen-browser.profileNames = ["default"];
+
+  stylix.targets.rofi.enable = false;
 
   home.packages = [
     pkgs.nautilus
   ];
 
-  xdg.userDirs = {
-    enable = true;
-    createDirectories = true;
-  };
+  xdg.userDirs.createDirectories = true;
 
-  xdg.mimeApps.defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications."inode/directory" = "org.gnome.Nautilus.desktop";
+  };
 }

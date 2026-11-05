@@ -3,13 +3,11 @@
   pkgs,
   ...
 }: {
-  # Zed, the GUI editor and default handler for text files. Stylix syncs the
-  # fonts, but its generated theme is harsh, so we force the hand-tuned
-  # "Kanagawa Wave" from the extension below (declared so it installs).
+  # Stylix owns fonts, but its theme is bypassed. Kanagawa Wave comes from
+  # the extension below
   programs.zed-editor = {
     enable = true;
 
-    # Auto-installed from the Zed extension registry.
     extensions = [
       "kanagawa-themes"
       "catppuccin-icons"
@@ -18,7 +16,7 @@
     ];
 
     userSettings = {
-      # mkForce: the Stylix zed target also sets `theme`.
+      # Stylix also writes a theme, hence mkForce
       theme = lib.mkForce "Kanagawa Wave";
 
       icon_theme = "Catppuccin Frappé";
@@ -30,13 +28,12 @@
         metrics = false;
       };
 
-      # Load the project's direnv environment when a folder is opened cold.
+      # Direct skips the shell round trip for direnv
       load_direnv = "direct";
     };
   };
 
-  # Upstream's .desktop reuses the existing window; ours adds --new so
-  # Nautilus double-clicks land in a fresh window.
+  # Upstream reuses the current window, this one opens a new window
   xdg.desktopEntries."zed-new-window" = {
     name = "Zed (new window)";
     genericName = "Text Editor";
@@ -48,8 +45,7 @@
     mimeType = ["text/plain" "application/x-zerosize" "x-scheme-handler/zed"];
   };
 
-  # Text files go to Zed. Zen also claims text/plain via mkDefault, so these
-  # plain assignments win; html and json deliberately stay with Zen.
+  # These win over Zen. html and json stay with Zen
   xdg.mimeApps = {
     enable = true;
     defaultApplications = let
@@ -70,11 +66,10 @@
     };
   };
 
-  # Ship a `zed` command alias for the zeditor binary.
   home.packages = [
     (pkgs.runCommandLocal "zed-cmd" {} ''
       mkdir -p $out/bin
-      ln -s ${pkgs.zed-editor}/bin/zeditor $out/bin/zed
+      ln -s ${lib.getExe pkgs.zed-editor} $out/bin/zed
     '')
   ];
 }

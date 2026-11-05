@@ -1,10 +1,7 @@
 {pkgs, ...}: {
-  # Stylix leaves icons alone, so they are set here.
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
+  # Stylix does not set icons, so use Papirus
+  gtk.iconTheme = {
+    name = "Papirus-Dark";
+    package = pkgs.papirus-icon-theme;
   };
 }
