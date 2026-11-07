@@ -6,15 +6,17 @@
   ...
 }: {
   programs.niri.enable = true;
-  # Prebuilt cache from niri.cachix.org.
+
+  # Prebuilt from niri.cachix.org. The module passes it to home-manager
   programs.niri.package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-stable;
 
-  # Wayland portals: gnome backend for screencasting, gtk for file pickers.
+  # Only one polkit agent may run. Noctalia ships the themed one
+  systemd.user.services.niri-flake-polkit.enable = false;
+
+  # GTK adds the file chooser, niri-flake already brings GNOME
   xdg.portal = {
-    enable = true;
     xdgOpenUsePortal = true;
     extraPortals = [
-      pkgs.xdg-desktop-portal-gnome
       pkgs.xdg-desktop-portal-gtk
     ];
     config.niri = {

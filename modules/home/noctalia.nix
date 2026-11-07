@@ -1,26 +1,21 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
-  # The Noctalia desktop shell: bar, launcher, notifications, control center,
-  # lock screen and wallpaper, all in one. Colors follow Stylix.
+{...}: {
+  # Stylix owns colors
   programs.noctalia = {
     enable = true;
 
-    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-    # Run as a systemd user service tied to the graphical (niri) session so it
-    # starts and stops with your login.
+    # User service, stops at logout
     systemd.enable = true;
 
-    # Configure the rest interactively via its control center (Mod+Space →
-    # settings) and, once you're happy, pin values here (schema at
-    # docs.noctalia.dev).
-    # Switcher: compact strip of window cards instead of the carousel.
+    # Integration only. Bar, widgets and wallpaper are tuned in the control
+    # center and stored in ~/.local/state/noctalia/settings.toml, which wins
+    # over this file without a rebuild. Schema: docs.noctalia.dev
     settings.shell.window_switcher.style = "compact";
-    # Needed because the shell itself runs as a systemd user unit: apps launched
-    # from it then survive a shell restart instead of dying with it.
+
+    # Apps launched by the shell survive a shell restart
     settings.shell.launch_apps_as_systemd_services = true;
+
+    # Noctalia answers auth prompts. The niri-flake agent is masked in
+    # modules/nixos/niri.nix
+    settings.shell.polkit_agent = true;
   };
 }
