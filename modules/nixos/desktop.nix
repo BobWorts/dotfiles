@@ -1,18 +1,28 @@
 {pkgs, ...}: {
-  # 32-bit GL for Steam/Wine. The `enable` half is turned on by niri-flake.
+  environment.sessionVariables = {
+    QT_QPA_PLATFORM = "wayland;xcb";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    NIXOS_OZONE_WL = "1";
+    SDL_VIDEODRIVER = "wayland";
+  };
+
+  # 32-bit GL for Steam and Wine. niri-flake enables the base stack
   hardware.graphics.enable32Bit = true;
 
-  # Trash + mounting for Nautilus.
+  # Trash and mount support for Nautilus
   services.gvfs.enable = true;
 
-  # pkexec helper so Nautilus can browse admin:// locations.
+  # GTK settings backend
+  programs.dconf.enable = true;
+
+  # Auth dialogs in Noctalia and Nautilus. pkexec is needed for admin URIs
+  security.polkit.enable = true;
   security.polkit.enablePkexecWrapper = true;
 
-  # Indexed file search; without it Nautilus only matches names in the folder.
+  # Nautilus content search
   services.gnome.localsearch.enable = true;
 
-  # A handful of GUI essentials live at the system level so they're always
-  # present regardless of which user logs in.
+  # Present for every user
   environment.systemPackages = with pkgs; [
     brightnessctl
     playerctl
