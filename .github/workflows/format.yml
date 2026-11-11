@@ -1,7 +1,6 @@
 name: format
 
-# Manually-triggered helper that formats the tree with alejandra and commits
-# the result. Useful when you don't have Nix on the machine you're editing from.
+# Manual helper. Formats with alejandra and commits. Useful without local Nix
 on:
   workflow_dispatch:
 
@@ -12,7 +11,7 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - name: Format with alejandra
         run: nix run nixpkgs#alejandra -- .
