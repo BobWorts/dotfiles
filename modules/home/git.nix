@@ -3,13 +3,14 @@
     enable = true;
 
     settings = {
-      # ⇩ Identity comes from local.nix.
       user.name = local.gitUserName;
       user.email = local.gitUserEmail;
 
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
+      fetch.prune = true;
+      branch.sort = "-committerdate";
       merge.conflictStyle = "zdiff3";
       diff.colorMoved = "default";
 
@@ -23,7 +24,7 @@
     };
   };
 
-  # delta: syntax-highlighted, side-by-side pager for git output (not themed by Stylix).
+  # Stylix owns colors, delta changes layout
   programs.delta = {
     enable = true;
     enableGitIntegration = true;
