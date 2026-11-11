@@ -5,19 +5,20 @@
   local,
   ...
 }: {
-  # Enabled from local.nix: `useQEMU = true;`
   config = lib.mkIf (local.useQEMU or false) {
     virtualisation.libvirtd = {
       enable = true;
+      # Guest RAM is not dumped on host shutdown
+      onShutdown = "shutdown";
       qemu = {
-        package = pkgs.qemu_kvm; # Full-featured qemu instead of the minimal build
-        swtpm.enable = true; # Software TPM, needed for Windows 11 guests
+        package = pkgs.qemu_kvm; # Host architecture only, saves space
+        swtpm.enable = true; # Software TPM for Windows 11 guests
       };
     };
 
     programs.virt-manager.enable = true;
 
-    # Manage VMs without sudo (root-equivalent).
+    # Manage VMs without sudo
     users.users.${username}.extraGroups = ["libvirtd"];
   };
 }

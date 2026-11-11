@@ -1,16 +1,16 @@
 {...}: {
-  # Firmware updates via LVFS: `fwupdmgr refresh && fwupdmgr update`.
+  # Firmware updates from the LVFS catalog
   services.fwupd.enable = true;
 
-  # Thunderbolt / USB4 authorization (docks, eGPUs, TB SSDs).
+  # Thunderbolt and USB4 authorization for docks and eGPUs
   services.hardware.bolt.enable = true;
 
-  # Compressed RAM swap. Faster than disk swap and saves NVMe wear.
+  # Compressed RAM swap, faster than disk and less NVMe wear
   zramSwap.enable = true;
 
-  # Fingerprint reader; enroll with `fprintd-enroll`.
+  # Fingerprint reader. Enroll with fprintd-enroll
   services.fprintd.enable = true;
 
-  # Lets prebuilt glibc binaries (npm CLIs, vendor tools) find the loader.
+  # Loader for prebuilt binaries like npm CLIs
   programs.nix-ld.enable = true;
 }

@@ -1,6 +1,5 @@
 {pkgs, ...}: {
-  # One palette to rule them all. Stylix derives colors for niri, noctalia,
-  # kitty, bat, btop, GTK/Qt and more from a single base16 scheme.
+  # Stylix derives colors for niri, noctalia, kitty, bat, btop and GTK apps
   stylix = {
     enable = true;
     polarity = "dark";
@@ -8,12 +7,10 @@
     base16Scheme = ../../themes/kanagawa.yaml;
     image = ../../themes/wallpaper.png;
 
-    # A hint of terminal transparency for that layered desktop look.
-    # 0.95 looks good for pure transparency
-    # 0.85 with blur enabled in WM
+    # 0.95 for transparency, 0.85 when the compositor blurs
     opacity.terminal = 0.95;
 
-    # Don't style GTK source view, as it currently triggers binary cache misses -> long rebuilds
+    # Disabled until this cache issue is fixed
     # https://github.com/nix-community/stylix/issues/2318
     targets.gtksourceview.enable = false;
 
