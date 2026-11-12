@@ -1,199 +1,161 @@
-# nnn-starter
+# dotfiles
+
+[![CI](https://github.com/BobWorts/dotfiles/actions/workflows/check.yml/badge.svg)](https://github.com/BobWorts/dotfiles/actions/workflows/check.yml)
+![NixOS](https://img.shields.io/badge/NixOS-unstable-blue?logo=nixos&logoColor=white)
+[![Built with Nix](https://img.shields.io/badge/Built%20with%20Nix-41439a?logo=nixos&logoColor=white)](https://builtwithnix.org)
+![niri](https://img.shields.io/badge/niri-25.08-blue)
+![Noctalia](https://img.shields.io/badge/Noctalia-v5-purple)
 
 <p align="center">
   <img src="media/screenshot.png" alt="Screenshot of the NNN desktop, Niri + Noctalia on NixOS" width="100%">
 </p>
 
 > Three letters, zero compromise, now with batteries included.
-
-An opinionated [omarchy](https://omarchy.org)-style NixOS starter for the [**NNN
-stack**](https://the-nnn-stack.github.io/): **N**ixOS + **N**iri + **N**octalia. Clone it, set two placeholders,
-run one command, and get a cohesive, themed, developer-ready Wayland desktop.
+>
+> My personal **NNN** desktop, built on
+> [nnn-starter](https://github.com/floatdrop/nnn-starter), an opinionated
+> [omarchy](https://omarchy.org)-style starter for [NixOS + niri +
+> Noctalia](https://the-nnn-stack.github.io).
 
 ## What you get
 
-| Layer        | Choice |
-|--------------|--------|
-| Compositor   | [niri](https://github.com/YaLTeR/niri) (scrollable-tiling Wayland) via [niri-flake](https://github.com/sodiboo/niri-flake) |
-| Shell/UI     | [Noctalia](https://github.com/noctalia-dev/noctalia-shell) **v5** (bar, launcher, notifications, lock, control center) |
-| Theming      | [Stylix](https://github.com/nix-community/stylix) with the **Kanagawa** palette, one scheme themes everything |
-| Terminal     | [kitty](https://sw.kovidgoyal.net/kitty/) |
-| Shell + prompt | Zsh + [Starship](https://starship.rs) (autosuggestions, syntax highlighting, fzf, zoxide) |
-| Editor (GUI) | [Zed](https://zed.dev), themed via Stylix, default handler for text/source files |
-| Editor (terminal) | nano, the `$EDITOR` |
-| Browser      | [Zen](https://zen-browser.app) (beta channel, via the community flake) |
-| File manager | [Nautilus](https://apps.gnome.org/Nautilus/) (GNOME Files) |
-| Font         | Maple Mono NF |
-| Login        | greetd + tuigreet → niri session |
+- **Compositor** — [niri](https://github.com/YaLTeR/niri)
+- **Shell/UI** — [Noctalia](https://github.com/noctalia-dev/noctalia), bar,
+  launcher, lock screen, control center
+- **Theming** — [Stylix](https://github.com/nix-community/stylix)
+- **Terminal** — [kitty](https://sw.kovidgoyal.net/kitty/)
+- **Prompt** — fish + [Starship](https://starship.rs)
+- **Editor** — [Zed](https://zed.dev), nano
+- **Browser** — [Zen](https://zen-browser.app), beta channel
+- **Files** — [Nautilus](https://apps.gnome.org/Nautilus/)
+- **Font** — Maple Mono NF
+- **Login** — greetd + tuigreet
+- **CLI** — lsd, fzf, bat, btop, ripgrep, fd, zoxide, dust, duf, procs, gping, tealdeer, jq, lazygit, delta, direnv, nh
 
-### Modern command-line toolset
-`lsd` · `fzf` · `bat` · `btop` · `ripgrep` · `fd` · `zoxide` · `eza` · `yazi` ·
-`dust` · `duf` · `procs` · `bandwhich` · `gping` · `zellij` ·
-`tealdeer` · `jq` · `yq` · `lazygit` · `delta` · `gh` · `direnv` + `nix-direnv` ·
-`nh` · `nom`.
-Old names are aliased to the new tools (`ls`→`lsd`, `cat`→`bat`,
-`cd`→`zoxide`, `top`→`btop`, …).
+## Requirements
+
+- A NixOS machine or the live NixOS installer
+- `git` and `sudo`
+- Flakes enabled (`experimental-features = nix-command flakes`); the live
+  installer ships with it, on an installed machine add it to
+  `/etc/nix/nix.conf` before step 5
 
 ## Quick start
 
 ```sh
-# 1. Get the repo onto your machine (or into the live NixOS installer).
-git clone https://github.com/<you>/nnn-starter ~/nnn-starter
-cd ~/nnn-starter
+# 1. Clone into the live NixOS installer or your home directory.
+git clone https://github.com/BobWorts/dotfiles ~/dotfiles
+cd ~/dotfiles
 
-# 2. Generate real hardware config for THIS machine.
-sudo nixos-generate-config --show-hardware-config > hosts/example/hardware-configuration.nix
-
-# 3. Copy the personal-settings template and fill in your identity.
+# 2. Copy the template and fill in your identity.
+#    This guide uses hostName = "template", substitute your own name.
 cp local.example.nix local.nix
 $EDITOR local.nix
 
-# 4. Build & switch. `path:` is needed so the gitignored local.nix is visible.
-#    The attr is your `hostName` (`example` unless you changed it).
-sudo nixos-rebuild switch --flake path:.#example
+# 3. Create your host folder from the shipped template.
+#    The folder name must match hostName from local.nix.
+cp -a hosts/example hosts/template
+
+# 4. Generate the real hardware config for this machine.
+sudo nixos-generate-config --show-hardware-config > hosts/template/hardware-configuration.nix
+
+# 5. Build and switch. path: keeps the gitignored local.nix visible.
+sudo nixos-rebuild switch --flake path:.#template
 ```
-
-After the first build, rebuild with `nh os switch` (aliased to `rebuild`) or
-`update` (which also bumps `flake.lock`). The `nh` aliases already build with
-`path:` too.
-
-`nh` picks the config by your machine's hostname, and the flake attr follows
-`hostName` from `local.nix`, so there is nothing to rename.
 
 ## Placeholders to edit
 
-Your personal settings live in one place, `local.nix`. The tracked
-[`local.example.nix`](local.example.nix) is the template, copy it once (step 3)
-and fill it in. When `local.nix` is absent (a fresh clone, or CI) the flake
-falls back to the example (and warns during evaluation), so evaluation always
-succeeds.
-
-> `local.nix` is gitignored, so your real values never reach git history.
-> Because flakes skip gitignored files, always build through `path:<repo>` (see
-> step 4, and `nh` is preconfigured with it). A plain `--flake .` build would not
-> see `local.nix` at all.
+Personal settings live in `local.nix`, copied from the tracked
+[`local.example.nix`](local.example.nix) in step 2. Without it, a fresh clone
+falls back to the example and warns during evaluation.
 
 | What | Where |
 |------|-------|
-| **Username, hostname, full name** | `local.nix` |
-| **Git identity** (name, email) | `local.nix` |
-| **Timezone** | `local.nix` |
-| **Keyboard layouts** | `local.nix` |
-| **QEMU VMs** | `local.nix` (`useQEMU = true`) |
-| **Hardware** | `hosts/example/hardware-configuration.nix` (generated, step 2 above) |
-| **Locale** | [`hosts/example/default.nix`](hosts/example/default.nix) |
+| Username, hostname, full name, auto-login, git, timezone, locale, layouts, outputs, QEMU | `local.nix` |
+| Hardware | `hosts/<hostName>/hardware-configuration.nix`, step 4 |
 
-## Layout
+> Build through `path:`, as in step 5. Flakes skip gitignored files, and `nh`
+> is configured with it already.
 
-```
-flake.nix              # inputs, nixosConfiguration, formatter, devShells
-local.example.nix      # template for machine-local identity (copy to local.nix)
-hosts/example/         # host: hardware + locale
-modules/nixos/         # system: boot, audio, niri, noctalia, stylix, users…
-modules/home/          # user: zsh, kitty, niri keybinds, cli tools…
-themes/kanagawa.yaml   # vendored base16 palette (Stylix source of truth)
-```
+## Key bindings, niri
 
-## Key bindings (niri)
+### General
 
 | Keys | Action |
 |------|--------|
-| `Mod`+`Return` | Terminal (kitty) |
-| `Mod`+`Space` | Noctalia launcher |
-| `Mod`+`B` | Browser (Zen) |
-| `Mod`+`E` | File manager (Nautilus) |
-| `Mod`+`Q` | Close window |
-| `Mod`+`F` / `Mod`+`Shift`+`F` | Maximize column / fullscreen |
-| `Mod`+`H`/`J`/`K`/`L` | Focus left/down/up/right |
-| `Mod`+`Shift`+`H`/`J`/`K`/`L` | Move window |
-| `Mod`+`1`…`5` | Switch workspace |
-| `Mod`+`R` | Cycle column width |
 | `Print` | Screenshot |
-| `Mod`+`Shift`+`/` | Hotkey overlay (full list) |
-| `Mod`+`Shift`+`E` | Quit niri |
+| `Mod`+`Tab` | Window switcher |
+| `Mod`+`Space` | Noctalia launcher |
 
-## Reskin it
+### Applications
 
-Everything is driven by one base16 file. Swap the palette and rebuild:
+| Keys | Action |
+|------|--------|
+| `Mod`+`Return` | Terminal, kitty |
+| `Mod`+`B` | Browser, Zen |
+| `Mod`+`E` | Files, Nautilus |
 
-```nix
-# modules/nixos/stylix.nix
-stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-```
+### Windows
 
-…or edit `themes/kanagawa.yaml` directly.
+| Keys | Action |
+|------|--------|
+| `Mod`+`←`/`↓`/`↑`/`→` | Focus |
+| `Mod`+`Shift`+`←`/`↓`/`↑`/`→` | Move |
+| `Mod`+`Q` | Close |
+| `Mod`+`F` / `Mod`+`Shift`+`F` | Maximize / fullscreen |
+| `Mod`+`V` / `Mod`+`W` | Float / tab |
+| `Mod`+`R` | Preset column width |
+| `Mod`+`Minus` / `Mod`+`Equal` | Column width down / up |
+| `Mod`+`Shift`+`Minus` / `Mod`+`Shift`+`Equal` | Window height down / up |
+| `Mod`+`[` / `Mod`+`]` | Consume or expel left / right |
+| `Mod`+`,` / `Mod`+`.` | Merge into column / expel |
 
-## Per-project dev environments
+### Workspaces
 
-This starter deliberately keeps language toolchains **out** of the global
-system. Use direnv + flakes per project instead:
+| Keys | Action |
+|------|--------|
+| `Mod`+`1`…`5` | Switch workspace |
+| `Mod`+`Shift`+`1`…`5` | Move window to workspace |
 
-```sh
-# in a project repo
-echo "use flake" > .envrc && direnv allow
-```
+Volume, mute, playback and brightness are the XF86 media keys, wired to `wpctl`,
+`playerctl` and `brightnessctl`. `Mod`+`Shift`+`/` shows the full overlay,
+`Mod`+`Shift`+`E` quits niri.
 
-```nix
-# that project's flake.nix devShell, e.g.
-devShells.default = pkgs.mkShell { packages = [ pkgs.nodejs pkgs.cargo ]; };
-```
+## Gallery
 
-## Verifying changes
+Coming soon.
 
-Everything evaluates/lints locally without a NixOS build. The flake attr is
-named after `hostName` from `local.nix` (`example` out of the box), so swap
-`example` below when yours differs:
+## CI
 
-```sh
-nix flake check                                              # evaluate everything
-nix flake show                                               # list outputs
-nix fmt                                                      # format (alejandra)
-nix run nixpkgs#statix -- check . && nix run nixpkgs#deadnix # lint
-nix eval .#nixosConfigurations.example.config.system.build.toplevel.drvPath
-```
+[`.github/workflows/check.yml`](.github/workflows/check.yml) runs on pushes to
+`main` and on pull requests (README and `media/` changes are ignored). The
+eval-only `ci` twin evaluates the same module tree with a dummy root device, so
+it works on a fresh clone where the hardware file is still a placeholder.
 
-On a NixOS box you can smoke-test in a VM:
+- **eval**: `nix eval .#nixosConfigurations.ci.config.system.build.toplevel.drvPath`,
+  catches option typos and niri schema errors
+- **lint**: `alejandra --check`, `statix`, `deadnix`
+- **build**: realises the full system closure of `ci`, on `main` and manual
+  dispatch, with niri and noctalia prebuilt from their caches
 
-```sh
-nixos-rebuild build-vm --flake path:.#example
-./result/bin/run-example-vm
-```
+A separate manual `format` workflow runs alejandra and commits the result.
 
-### CI
+> Keep `flake.lock` committed so CI and your machines resolve identical inputs.
 
-[`.github/workflows/check.yml`](.github/workflows/check.yml) runs on every push
-and PR:
+## Notes
 
-- **eval**: `nix flake check --no-build` evaluates the whole config. It is the
-  fast, reliable signal, and catches option typos and niri schema errors.
-- **lint**: `alejandra --check`, `statix`, `deadnix`.
-- **build**: realises the full system closure. Runs on `main` / manual
-  dispatch. niri and noctalia are pulled prebuilt from their cachix caches
-  (`niri.cachix.org`, `noctalia.cachix.org`), so it finishes in minutes instead
-  of compiling C++/Rust from source. Delete the job if you don't want it.
+- Theming is one base16 file under `themes/`, applied by Stylix everywhere.
+- niri and noctalia would otherwise compile for about an hour. Both come
+  prebuilt: noctalia tracks its `cachix` branch, where upstream pushes only
+  after a build reaches `noctalia.cachix.org`; niri is pinned to the last
+  commit with a green cache build. Neither input may follow our `nixpkgs`, a
+  different nixpkgs means a cache miss.
 
-> **Commit a `flake.lock`.** Generate it once on a machine with Nix
-> (`nix flake lock`) and commit it, so CI and your machines resolve identical
-> inputs. Until then, each run pins the latest upstream automatically.
+## Credits
 
-## Notes / next steps (not included)
-
-- Secrets: add [sops-nix](https://github.com/Mic92/sops-nix) or
-  [agenix](https://github.com/ryantm/agenix).
-- Declarative disks: add [disko](https://github.com/nix-community/disko).
-- Multi-host: factor `hosts/` into one folder per machine and add more
-  `nixosConfigurations` entries.
-
-### Binary caches (no source builds)
-
-niri and noctalia would otherwise compile from source (noctalia's C++ tree alone
-is ~an hour). To avoid that, the flake pins **noctalia to its `cachix` branch**,
-and upstream force-pushes there only after a commit's package is built and pushed
-to `noctalia.cachix.org`, so `inputs.noctalia.packages.<sys>.default` is always a
-cache hit. It still tracks the **v5 line** (`main`), just slightly behind. The
-old series lives on `legacy-v4`. niri uses niri-flake's prebuilt
-`niri-stable` from `niri.cachix.org` for the same reason.
-
-The two caches are trusted in [`modules/nixos/default.nix`](modules/nixos/default.nix)
-so your machine pulls binaries too. Neither input may `follows` our `nixpkgs`.
-That would rebuild them against a different nixpkgs and miss the cache.
+- [nnn-starter](https://github.com/floatdrop/nnn-starter), the base this repo
+  started from
+- [the NNN stack](https://the-nnn-stack.github.io), and its community
+- [niri](https://github.com/YaLTeR/niri)
+- [Noctalia](https://github.com/noctalia-dev/noctalia)
+- [Stylix](https://github.com/nix-community/stylix)
