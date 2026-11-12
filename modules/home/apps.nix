@@ -16,6 +16,7 @@
 
   home.packages = [
     pkgs.nautilus
+    pkgs.telegram-desktop
   ];
 
   xdg.userDirs.createDirectories = true;
