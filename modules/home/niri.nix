@@ -7,7 +7,6 @@
     # https://github.com/niri-wm/niri/wiki/Configuration:-Miscellaneous
     # #################################################
 
-    # Bare node, niri flags take no arguments
     debug.honor-xdg-activation-with-invalid-serial = [];
 
     # Noctalia takes screenshots
