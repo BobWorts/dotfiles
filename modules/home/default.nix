@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./cli.nix
+    ./dev.nix
     ./fish.nix
     ./starship.nix
     ./git.nix

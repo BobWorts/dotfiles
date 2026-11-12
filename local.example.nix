@@ -48,4 +48,7 @@
   # };
 
   useQEMU = false;
+
+  # C++ toolset: cmake, ninja, xmake, clang tools, gdb, ccache
+  useDev = false;
 }
