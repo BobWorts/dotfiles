@@ -9,6 +9,7 @@
     ./niri.nix
     ./noctalia.nix
     ./desktop.nix
+    ./gaming.nix
     ./stylix.nix
     ./users.nix
     ./qemu.nix
