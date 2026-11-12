@@ -28,6 +28,8 @@
 - **Editor** — [Zed](https://zed.dev), nano
 - **Browser** — [Zen](https://zen-browser.app), beta channel
 - **Files** — [Nautilus](https://apps.gnome.org/Nautilus/)
+- **Chat** — [Telegram](https://desktop.telegram.org)
+- **Gaming** — Steam, Proton-GE, GameMode, MangoHud, Gamescope
 - **Font** — Maple Mono NF
 - **Login** — greetd + tuigreet
 - **CLI** — lsd, fzf, bat, btop, ripgrep, fd, zoxide, dust, duf, procs, gping, tealdeer, jq, lazygit, delta, direnv, nh
