@@ -6,8 +6,10 @@
     SDL_VIDEODRIVER = "wayland";
   };
 
-  # 32-bit GL for Steam and Wine. niri-flake enables the base stack
-  hardware.graphics.enable32Bit = true;
+  hardware.graphics = [
+    enable = true;
+    enable32Bit = true;
+  ]
 
   # Trash and mount support for Nautilus
   services.gvfs.enable = true;
